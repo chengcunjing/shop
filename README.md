@@ -84,3 +84,11 @@
 ***
 
 # 遇到的坑
+* 因为此项目使用了mongoDB数据库，所以我使用了mongodbvue可视化工具，数据添加成功了，使用命令也能查询出来，但是mongodbvue中Collections无法显示出数据表，查了才知道，是引擎问题，Mongodb 3.0之后默认的 storageEngine为wiredTiger引擎，非mmapv1引擎；
+但MongoVue1.6.9版本无法出色的处理wiredTiger引擎数据，只要降到2.X版本就可以显示了。    
+以前启动数据库是-dbpath C:\data   
+现在启动数据库是mongod -storageEngine mmapv1 -dbpath C:\data   
+其中C:\data是我的数据库存储路径
+* 我使用了vue-lazyload懒加载图片，当我用请求回来的数据用v-if循环遍历图片，我执行翻页功能时，神奇的事情发生了，其他的数据都变了，唯独图片还是原来的图片，我一直寻找原因，到最后终于发现了，v-if循环遍历时要加key。
+key为唯一标识符，当你进行翻页操作时，数据重新加载，key标识了上一次的图片，重新加载后就会拿到新的图片进行渲染，图片就会改变了。   
+[Vue2.0 v-for 中 :key 到底有什么用？](https://www.cnblogs.com/zhumingzhenhao/p/7688336.html)
